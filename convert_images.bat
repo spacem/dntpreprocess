@@ -1,0 +1,2 @@
+C:\games\Unpacker\ImageMagick-6.9.3-7-portable-Q16-x64\mogrify -resize 80%% -format png C:\games\Unpacker\na\resource\ui\mainbar\*.dds
+move C:\games\Unpacker\na\resource\ui\mainbar\*.png C:\games\Unpacker\images
