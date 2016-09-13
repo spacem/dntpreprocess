@@ -4,7 +4,6 @@ var LZString = require('lz-string');
 
 eval(fs.readFileSync('../dntviewer/simplerreader.js', 'utf8'));
 eval(fs.readFileSync('../dntviewer/dntreader.js', 'utf8'));
-eval(fs.readFileSync('../dntviewer/dntranslations.js', 'utf8'));
 
 var sourceDir = process.argv[2];
 var outputFolder = process.argv[3];
@@ -120,49 +119,4 @@ function walkSync(currentDirPath, callback) {
             walkSync(filePath, callback);
         }
     });
-}
-
-  
-  // function to lookup some string value by its id
-  // this will also work with values that have a number
-  // of mids enclosed in curly brackets
-function translate(value, data) {
-  if(!data) {
-    return value;
-  }
-  var result = "";
-  
-  if(value === 0 || value === "" || value === null) {
-    result = value;
-  }
-  else if(value.toString().indexOf(',') > -1) {
-    var values = value.toString().split(',');
-    
-    var results = []
-    for(var v=0;v<values.length;++v) {
-      var stripped = values[v].replace("{", "").replace("}", "");
-      results.push(values[v].replace(stripped, translate(stripped, data)));
-    }
-    
-    result = results.join(',');
-  }
-  else {
-    result = data[value];
-    if(typeof result === 'undefined') {
-      if(typeof value === 'string') {
-        if(value.indexOf('{') == 0) {
-          var stripped = value.replace("{", "").replace("}", "");
-          result = value.replace(stripped, translate(stripped, data));
-        }
-        else {
-          result = value.toString();
-        }
-      }
-      else {
-        return value;
-      }
-    }
-  }
-  
-  return result;
 }
