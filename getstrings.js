@@ -41,23 +41,30 @@ else {
   }
   
   walkSync(sourceDir, function(filePath, stat) {
+
+    try {
+      var fileName = path.basename(filePath, '.lzjson');
       
-    var fileName = path.basename(filePath, '.lzjson');
-    
-    var reader = null;
-    if(fileName.indexOf('table') > 0 && fileName.indexOf('optimised') < 0) {
-      reader = readFile(filePath);
-      
-      var colNames = getRelaventColumnNames(reader);
-      if(colNames.length) {
-        for(var i=0;i<reader.numRows;++i) {
-          
-          for(var j=0;j<colNames.length;++j) {
-            var val = reader.getValue(i, colNames[j]);
-            processValue(val);
+      var reader = null;
+      if(fileName.indexOf('optimised') < 0 && fileName.indexOf('uistring') < 0 && fileName.indexOf('all-') < 0) {
+        reader = readFile(filePath);
+        
+        var colNames = getRelaventColumnNames(reader);
+        if(colNames.length) {
+          // console.log('extracting ', colNames.length, ' columns from ', fileName, colNames);
+
+          for(var i=0;i<reader.numRows;++i) {
+            
+            for(var j=0;j<colNames.length;++j) {
+              var val = reader.getValue(i, colNames[j]);
+              processValue(val.toString());
+            }
           }
         }
       }
+    }
+    catch(ex) {
+      console.log('unable to find strings in file', filePath, ex);
     }
   });
   
@@ -90,7 +97,6 @@ function getRelaventColumnNames(reader) {
     for(var j=0;j<reader.columnNames.length;++j) {
       if(validColNames[i] == reader.columnNames[j]) {
         retVal.push(validColNames[i]);
-        break;
       }
     }
   }
