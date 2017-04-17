@@ -6,8 +6,29 @@ eval(fs.readFileSync('../dntviewer/simplerreader.js', 'utf8'));
 eval(fs.readFileSync('../dntviewer/dntreader.js', 'utf8'));
 
 var sourceDir = process.argv[2];
-var outputFolder = process.argv[3];
+var dnFolder = process.argv[3];
+var oldVersionFolder = process.argv[4];
 console.log('source dir:' + sourceDir);
+console.log('dn dir:' + dnFolder);
+console.log('old ver dir:' + oldVersionFolder);
+
+var currentVersion = readCurrentVerison(dnFolder);
+console.log('current Version:' + currentVersion);
+
+var previousItemFileName = getPreviousItemFileName(oldVersionFolder, currentVersion);
+console.log('previous version fileName:' + previousItemFileName);
+
+if(previousItemFileName) {
+  var oldItemReader = readFile(previousItemFileName);
+  var oldItemVersions = {};
+  for(var i=0;i<oldItemReader.numRows;++i) {
+    var id = oldItemReader.getValue(i, 'id');
+    var version = oldItemReader.getValue(i, 'version');
+    oldItemVersions[id] = version;
+  }
+}
+
+oldItemReader = null;
 
 var itemDntReader = new DntReader();
 itemDntReader.columnNames = [
@@ -19,6 +40,7 @@ itemDntReader.columnNames = [
   'Type',
   'LevelLimit',
   'fileName',
+  'version',
   ];
 itemDntReader.numColumns = itemDntReader.columnNames.length;
 itemDntReader.data = [];
@@ -28,9 +50,7 @@ if(!sourceDir) {
   console.log("arg1: path to dnt files, arg2: output folder");
 }
 else {
-  if(!outputFolder) {
-    outputFolder = sourceDir;
-  }
+  outputFolder = sourceDir;
   
   walkSync(sourceDir, function(filePath, stat) {
       
@@ -47,17 +67,30 @@ else {
 	  'IconImageIndex' in reader.columnIndexes) {
 
 		  for(var i=0;i<reader.numRows;++i) {
+
+        var id = reader.getValue(i, 'id');
+
+        var version = null;
+        if(oldItemVersions) {
+          if(id in oldItemVersions) {
+            version = oldItemVersions[id];
+          }
+          else {
+            version = currentVersion;
+          }
+        }
 			
-			itemDntReader.data.push([
-			  reader.getValue(i, 'id'),
-			  reader.getValue(i, 'NameID'),
-			  reader.getValue(i, 'NameIDParam'),
-			  reader.getValue(i, 'Rank'),
-			  reader.getValue(i, 'IconImageIndex'),
-			  reader.getValue(i, 'Type'),
-			  reader.getValue(i, 'LevelLimit'),
-			  fileName
-			]);
+        itemDntReader.data.push([
+          id,
+          reader.getValue(i, 'NameID'),
+          reader.getValue(i, 'NameIDParam'),
+          reader.getValue(i, 'Rank'),
+          reader.getValue(i, 'IconImageIndex'),
+          reader.getValue(i, 'Type'),
+          reader.getValue(i, 'LevelLimit'),
+          fileName,
+          version
+        ]);
 		  }
 	  }
 	}
@@ -69,6 +102,17 @@ else {
   
   itemDntReader.numRows = itemDntReader.data.length;
   outputFile(itemDntReader, outputFolder + '/' + 'all-items.lzjson');
+
+  if (!fs.existsSync(oldVersionFolder)) {
+      fs.mkdirSync(oldVersionFolder);
+  }
+
+  var versionDir = path.join(oldVersionFolder, currentVersion);
+  if (!fs.existsSync(versionDir)) {
+      fs.mkdirSync(versionDir);
+  }
+
+  outputFile(itemDntReader, path.join(versionDir, 'all-items.lzjson'));
 }
 
 function outputFile(data, fileName) {
@@ -119,4 +163,25 @@ function walkSync(currentDirPath, callback) {
             walkSync(filePath, callback);
         }
     });
+}
+
+function readCurrentVerison(dnFolder) {
+    var versionFileContents = fs.readFileSync(path.join(dnFolder, 'Version.cfg'), 'utf8');
+    var splitVersion = versionFileContents.split('\n');
+    return splitVersion[0].split(' ')[1].trim();
+}
+
+function getPreviousItemFileName(oldVersionFolder, currentVersion) {
+  if(!fs.existsSync(versionDir)) {
+    return;
+  }
+
+  var folders = fs.readdirSync(oldVersionFolder);
+  var previousVersion = 0;
+  folders.forEach(function(folder) {
+      if(folder != currentVersion && Number(folder) > previousVersion) {
+          previousVersion = Number(folder);
+      }
+  });
+  return path.join(oldVersionFolder, previousVersion.toString(), 'all-items.lzjson');
 }

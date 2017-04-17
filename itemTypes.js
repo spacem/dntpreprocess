@@ -13,7 +13,7 @@ module.exports = [
         potentialDnt: 'potentialtable.dnt',
         sparkDnt: 'potentialtable_potentialjewel.dnt',
         type: 'techs', 
-        minLevel: 24, 
+        minLevel: 60,
         minRank: 0 },
       
       { 
@@ -29,14 +29,14 @@ module.exports = [
         enchantDnt: 'enchanttable_dragonjewel.dnt', 
         gemDnt: 'dragonjeweltable.dnt',
         type: 'gems',
-        minLevel: 24, 
+        minLevel: 70, 
         minRank: 3 },
       
       { 
         mainDnt : 'itemtable_glyph.dnt', 
         potentialDnt: 'potentialtable_glyph.dnt',
         type: 'plates',
-        minLevel: 16, 
+        minLevel: 40, 
         minRank: 2 },
 
       {
@@ -59,7 +59,7 @@ module.exports = [
         sparkDnt: 'potentialtable_potentialjewel.dnt',
         setDnt: 'setitemtable.dnt',
         type: 'equipment',
-        minLevel: 24, 
+        minLevel: 40, 
         minRank: 3 },
       { 
         mainDnt: 'itemtable_reboot.dnt', 
@@ -69,7 +69,7 @@ module.exports = [
         potentialDnt: 'potentialtable_reboot.dnt',
         setDnt: 'setitemtable.dnt',
         type: 'equipment',
-        minLevel: 24, 
+        minLevel: 40, 
         minRank: 3 },
       { 
         mainDnt: 'itemtable_pvp.dnt',
@@ -78,8 +78,14 @@ module.exports = [
         enchantDnt: 'enchanttable.dnt', 
         setDnt: 'setitemtable.dnt',
         type: 'equipment',
-        minLevel: 24, 
+        minLevel: 40, 
         minRank: 3 },
+      { 
+        mainDnt: 'itemtable_cashclone.dnt', 
+        partsDnt: 'partstable_cashclone.dnt', 
+        type: 'cash',
+        minLevel: 0, 
+        minRank: 4 },
       { 
         mainDnt: 'itemtable_common2016.dnt', 
         partsDnt: 'partstable_common2016.dnt', 
@@ -125,6 +131,11 @@ module.exports = [
         partsDnt: 'vehiclepartstable.dnt',
         setDnt: 'setitemtable_cash.dnt',
         type: 'xtras',
+        minLevel: 0,
+        minRank: 0 },
+      {
+        mainDnt: 'itemtable_imprinting.dnt',
+        type: 'imprint',
         minLevel: 0,
         minRank: 0 },
     ];

@@ -58,6 +58,7 @@ try {
       }
       
       var optimisedFileName = outputFolder + '/' + fileName + '.optimised.lzjson'
+      var jsonFileName = outputFolder + '/' + fileName + '.optimised.json'
       
       if(filePath.indexOf('.dnt') == filePath.length - 4) {
         
@@ -83,7 +84,7 @@ try {
           }
           
           if((filtered || dntReader.colsToLoad) && !fileExists(optimisedFileName)) {
-            writeFileFromReader(dntReader, optimisedFileName);
+            writeFileFromReader(dntReader, optimisedFileName, jsonFileName);
           }
           dntReader = null;
         }
@@ -100,6 +101,7 @@ try {
       }
       
       var optimisedFileName = outputFolder + '/' + fileName + '.optimised.lzjson'
+      var jsonFileName = outputFolder + '/' + fileName + '.optimised.json'
       
       if(filePath.indexOf('.dnt') == filePath.length - 4 &&
         !fileExists(optimisedFileName)
@@ -123,7 +125,7 @@ try {
             return;
           }
           
-          writeFileFromReader(dntReader, optimisedFileName);
+          writeFileFromReader(dntReader, optimisedFileName, jsonFileName);
           dntReader = null;
         }
       }
@@ -136,13 +138,19 @@ catch(ex) {
 }
 
 
-function writeFileFromReader(dntReader, outputFileName) {
+function writeFileFromReader(dntReader, outputFileName, jsonFileName) {
   var dataString = JSON.stringify(dntReader);
-  var cdata = LZString.compressToUTF16(dataString);
   
-  dataString = null;
-  outputFile(cdata, outputFileName);
-  cdata = null;
+  if(jsonFileName) {
+    outputFile(dataString, jsonFileName);
+  }
+  else {
+    var cdata = LZString.compressToUTF16(dataString);
+    
+    dataString = null;
+    outputFile(cdata, outputFileName);
+    cdata = null;
+  }
 }
 
 function toArrayBuffer(b) {
@@ -180,8 +188,13 @@ function getColsToLoad(fileName) {
       }
     }
   }
-  
-  return colsToLoadLookup[fileName];
+
+  if(colsToLoadLookup[fileName]) {
+    return colsToLoadLookup[fileName];
+  }
+  else if(fileName in colsToLoad) {
+    return colsToLoad[fileName];
+  }
 }
 
 function canRemoveStats(fileName) {
@@ -266,6 +279,7 @@ function isEnchantFile(fileName) {
   return false;
 }
 
+
 function isPotentialFile(fileName) {
   
   for(var i=0;i<itemTypes.length;++i) {
@@ -327,7 +341,19 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
       else if(isPotentialFile(fileName)) {
         var id = data.getValue(i, 'PotentialID');
         if(id in potentialsToUse) {
-          newData.push(newRow);
+          var pData = data.getRow(i);
+
+          var found = false;
+          for(var q=0;q<i;++q) {
+            if(data.getValue(q, 'PotentialID') == id && potentialsMatch(data.getRow(q), pData)) {
+              found = true;
+              break;
+            }
+          }
+
+          if(!found) {
+            newData.push(newRow);
+          }
         }
       }
     }
@@ -343,45 +369,199 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
   }
 }
 
+function potentialsMatch(p1, p2) {
+  
+  var i = 1;
+  var j = 1;
+  for(;;) {
+    var state1Col = 'State' + i;
+    var state2Col = 'State' + j;
+    
+    if(p1[state1Col] == 107 || p1[state1Col] == 10 || p1[state1Col] == 11 || p1[state1Col] == 13 || p1[state1Col] == 14 || p1[state1Col] == 15) {
+      i++;
+      state1Col = 'State' + i;
+    }
+    if(p2[state2Col] == 107 || p2[state2Col] == 10 || p2[state2Col] == 11 || p2[state2Col] == 13 || p2[state2Col] == 14 || p2[state2Col] == 15) {
+      j++;
+      state2Col = 'State' + j;
+    }
+    
+    if(!(state1Col in p1 || state2Col in p2)) {
+      return true;
+    }
+    
+    if(!(state1Col in p1)) {
+      return false;
+    }
+    if(!(state2Col in p2)) {
+      return false;
+    }
+    
+    if(p1[state1Col] == -1 && p2[state2Col] == -1) {
+      return true;
+    }
+    
+    if(!(p1[state1Col] >= 0 || p2[state2Col] >= 0)) {
+      return true;
+    }
+    
+    if(p1[state1Col] != p2[state2Col]) {
+      return false;
+    }
+    
+    var val1Col = 'State' + i + 'Value';
+    var val2Col = 'State' + j + 'Value';
+    if(p1[val1Col] != p2[val2Col]) {
+      return false;
+    }
+    
+    ++i;
+  }
+}
+
+function isValidLevel(levelLimit, minLevel, fileName, nameParam) {
+  if(levelLimit < minLevel) {
+
+    if(fileName == 'itemtable_equipment.dnt' && nameParam.indexOf('{1000001970}') > -1) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  return true;
+}
+
+function skipItemType(dType) {
+  return dType == 8 ||
+    dType == 9 ||
+    dType == 11 ||
+    dType == 12 ||
+    dType == 13 ||
+    dType == 18 ||
+    dType == 19 ||
+    dType == 20 ||
+    dType == 21 ||
+    dType == 24 ||
+    dType == 29 ||
+    dType == 46 ||
+    dType == 51 ||
+    dType == 74 ||
+    dType == 75 ||
+    dType == 76 ||
+    dType == 78 ||
+    dType == 79 ||
+    dType == 84 ||
+    dType == 100 ||
+    dType == 112 ||
+    dType == 114 ||
+    dType == 115 ||
+    dType == 116 ||
+    dType == 122 ||
+    dType == 142 ||
+    dType == 174 ||
+    dType == 130 ||
+    dType == 182;
+}
+
+function skipRank(minRank, dRank) {
+  if(minRank && dRank < minRank) {
+    return true;
+  }
+
+  return false;
+}
+
+function skipTechs(data, currentIndex, dLevelLimit, dTypeParam1) {
+  for(var i=0;i<currentIndex;++i) {
+    if(data.getValue(i, 'LevelLimit') == dLevelLimit &&
+      data.getValue(i, 'TypeParam1') == dTypeParam1) {
+        return true;
+      }
+  }
+  return false;
+}
+
+function isBadPlate(dType, sellAmount, id) {
+  if(dType == 38) {
+    if(sellAmount === 0) {
+      return true;
+    }
+    
+    // Darkness, Fire, Lake, Lucky, Spirited, Strong-Willed, Stunning, Unyielding, Willful
+    switch (id) {
+      case 268466900:
+      case 268473768:
+      case 268473727:
+      case 268466739:
+      case 268466743:
+      case 268473587:
+      case 268473809:
+      case 268473554:
+      case 268466734:
+      case 268473850:
+      case 268466727:
+      case 268466726:
+      case 268473850:
+      case 268466896:
+      case 268466894:
+      case 268474015:
+      case 268474171:
+      case 268466733:
+      case 268466898:
+      case 268473842:
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function filterItemData(fileName, data) {
   
   var newData = [];
   var minLevel = getMinLevel(fileName);
   var minRank = getMinRank(fileName);
-  if(minLevel != null) {
     // console.log('filtering to ' + minLevel);
+  
+  for(var i=0;i<data.numRows;++i) {
     
-    for(var i=0;i<data.numRows;++i) {
-      
-      var dType = data.getValue(i, 'Type');
-      var dLevelLimit = data.getValue(i, 'LevelLimit');
-      var dRank = data.getValue(i, 'Rank');
-      
-      // skip certain types like pouches, res scrolls, etc
-      if(dType != 8 &&
-        dType != 29 &&
-        dType != 114 &&
-        dType != 79 &&
-        dType != 174 &&
-        dType != 130 &&
-        dType != 24 &&
-        dType != 182 &&
-        dType != 78 &&
-        dType != 20 &&
-        dType != 46 &&
-        dType != 9 &&
-        dLevelLimit >= minLevel &&
-        dRank >= minRank) {
+    var dType = data.getValue(i, 'Type');
+    if(skipItemType(dType)) {
+      continue;
+    }
 
-        var dState1_GenProb = data.getValue(i, 'State1_GenProb');
-        var dStateValue1 = data.getValue(i, 'StateValue1');
-        var dTypeParam1 = data.getValue(i, 'TypeParam1');
-          
-        // skip items with no data
-        if(dState1_GenProb > 0 || dStateValue1 > 0 || dTypeParam1 > 0) {
-          newData.push(data.data[i]);
+    var dLevelLimit = data.getValue(i, 'LevelLimit');
+    var dNameIDParam = data.getValue(i, 'NameIDParam');
+    if(!isValidLevel(dLevelLimit, minLevel, fileName, dNameIDParam)) {        
+      continue;
+    }
+
+    var dRank = data.getValue(i, 'Rank');
+    if(skipRank(minRank, dRank)) {
+      continue;
+    }
+
+    var sellAmount = data.getValue(i, 'SellAmount');
+    var id = data.getValue(i, 'id');
+    if(isBadPlate(dType, sellAmount, id)) {
+      continue;
+    }
+    
+    var dState1max = data.getValue(i, 'State1_Max');
+    var dStateValue1 = data.getValue(i, 'StateValue1');
+    var dTypeParam1 = data.getValue(i, 'TypeParam1');
+
+    // skip items with no data
+    if(dState1max > 0 || dStateValue1 > 0 || dTypeParam1 > 0) {
+
+      if(fileName == 'itemtable_skilllevelup.dnt') {
+        if(skipTechs(data, i, dLevelLimit, dTypeParam1)) {
+          continue;
         }
       }
+
+      newData.push(data.data[i]);
     }
   }
 

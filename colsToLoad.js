@@ -1,8 +1,8 @@
 module.exports = {
     mainDnt: {
       NameID: true, DescriptionID: true, NameIDParam: true, DescriptionIDParam: true,
-      Type: true,TypeParam1: true,TypeParam2: true, TypeParam3: true, LevelLimit: true, NeedJobClass: true, Rank: true,
-      State1: true, StateValue1: true, State1_Max: true, State1_GenProb: true,
+      Type: true,TypeParam1: true,TypeParam2: true, LevelLimit: true, NeedJobClass: true, Rank: true,
+      State1: true, StateValue1: true, State1_Max: true,
       State2: true, StateValue2: true, State2_Max: true,
       State3: true, StateValue3: true, State3_Max: true,
       State4: true, StateValue4: true, State4_Max: true,
@@ -14,8 +14,8 @@ module.exports = {
       State10: true,StateValue10: true,State10_Max: true,
       EnchantID: true,
       SkillID: true,
-	  DisjointDrop1: true, Disjointamount: true,
-      dragonjeweltype: true, AbleWStorage: true, ExchangeType:true, IconImageIndex: true, IsCash: true
+	    DisjointDrop1: true, Disjointamount: true,
+      dragonjeweltype: true, ExchangeType:true, IconImageIndex: true
     },
     partsDnt: {
       SetItemID: true
@@ -30,7 +30,7 @@ module.exports = {
       State1: true,State1Value: true,State2: true,State2Value: true,State3: true,State3Value: true,State4: true,State4Value: true,State5: true,State5Value: true,State6: true,State6Value: true,State7: true,State7Value: true,State8: true,State8Value: true,State9: true,State9Value: true,State10: true,State10Value: true
     },
     potentialDnt : {
-      PotentialID: true, PotentialNo: true,PotentialRatio: true,
+      PotentialID: true, PotentialNo: true,
       State1: true,State1Value: true,
       State2: true,State2Value: true,
       State3: true,State3Value: true,
@@ -62,5 +62,11 @@ module.exports = {
       State4: true, State4Value: true, State5: true, State5Value: true, State6: true, State6Value: true, State7: true, State7Value: true, State8: true, State8Value: true,
       State9: true, State9Value: true, State10: true, State10Value: true, State11: true, State11Value: true, State12: true, State12Value: true, State13: true, State13Value: true, 
       State14: true, State14Value: true, State15: true, State15Value: true, State16: true, State16Value: true
+    },
+    "playerleveltable.dnt": {
+      Strength:true,Agility:true,Intelligence:true,Stamina:true,AggroperPvE:true,BaseMP:true
+    },
+    "jobtable.dnt": {
+      JobName:true,CoreStatusNameID:true,JobNumber:true,BaseClass:true,ParentJob:true,EnglishName:true,JobIcon:true,Service:true,DamageType:true
     }
 }

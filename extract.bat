@@ -24,7 +24,7 @@ echo processing
 node dntpreprocess.js ../%REGION%/resource/ext ../firebase_%REGION%/public
 node uistringzip.js ../%REGION%/resource/uistring/uistring.xml > ../firebase_%REGION%/public/uistring.lzjson
 echo getting items
-node getitems.js ../firebase_%REGION%/public
+node getitems.js ../firebase_%REGION%/public %DNFOLDER% C:\games\Unpacker\old_version_items\%REGION%
 echo getting ids
 node getids.js ../firebase_%REGION%/public
 echo getting nums

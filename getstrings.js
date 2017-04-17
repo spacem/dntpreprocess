@@ -46,7 +46,7 @@ else {
       var fileName = path.basename(filePath, '.lzjson');
       
       var reader = null;
-      if(fileName.indexOf('optimised') < 0 && fileName.indexOf('uistring') < 0 && fileName.indexOf('all-') < 0) {
+      if(fileName.indexOf('optimised') < 0 && fileName.indexOf('uistring') < 0 && fileName.indexOf('all-') < 0 && fileName.indexOf('/maze/') < 0) {
         reader = readFile(filePath);
         
         var colNames = getRelaventColumnNames(reader);
@@ -68,7 +68,7 @@ else {
     }
   });
   
-  outputFile(newUiStrings, outputFolder + '/' + 'uistring.optimised.lzjson');
+  outputFile(newUiStrings, outputFolder + '/' + 'uistring.optimised.lzjson', outputFolder + '/' + 'uistring.optimised.json');
 }
 
 function processValue(val) {
@@ -104,10 +104,11 @@ function getRelaventColumnNames(reader) {
   return retVal;
 }
 
-function outputFile(data, fileName) {
+function outputFile(data, fileName, jsonFileName) {
   try
   {
     var dataString = JSON.stringify(data);
+    fs.writeFileSync(jsonFileName, dataString);
     var cdata = LZString.compressToUTF16(dataString);
     
     dataString = null;

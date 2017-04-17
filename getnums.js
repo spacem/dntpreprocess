@@ -77,7 +77,7 @@ function outputFile(data, fileName) {
     
     dataString = null;
     fs.writeFileSync(fileName, cdata);
-    console.log('written ' + fileName);
+    // console.log('written ' + fileName);
   }
   catch(ex) {
     console.log('--- ERROR --- ');
