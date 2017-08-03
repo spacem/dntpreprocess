@@ -422,6 +422,7 @@ function potentialsMatch(p1, p2) {
 function isValidLevel(levelLimit, minLevel, fileName, nameParam) {
   if(levelLimit < minLevel) {
 
+    // allow radient accessories only
     if(fileName == 'itemtable_equipment.dnt' && nameParam.indexOf('{1000001970}') > -1) {
       return true;
     }
@@ -517,6 +518,10 @@ function isBadPlate(dType, sellAmount, id) {
   return false;
 }
 
+function isAnnoyingItem(nameParam) {
+  return nameParam && nameParam.indexOf && nameParam.indexOf('{1000116119}') >= 0;
+}
+
 function filterItemData(fileName, data) {
   
   var newData = [];
@@ -534,6 +539,10 @@ function filterItemData(fileName, data) {
     var dLevelLimit = data.getValue(i, 'LevelLimit');
     var dNameIDParam = data.getValue(i, 'NameIDParam');
     if(!isValidLevel(dLevelLimit, minLevel, fileName, dNameIDParam)) {        
+      continue;
+    }
+
+    if(isAnnoyingItem(dNameIDParam)) {
       continue;
     }
 

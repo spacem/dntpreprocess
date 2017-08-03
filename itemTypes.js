@@ -40,6 +40,14 @@ module.exports = [
         minRank: 2 },
 
       {
+        mainDnt : 'itemtable_glyph95.dnt', 
+        potentialDnt: 'potentialtable_glyph95.dnt',
+        type: 'plates',
+        minLevel: 1,
+        minRank: 1,
+      },
+
+      {
         mainDnt: 'itemtable.dnt', 
         partsDnt: 'partstable.dnt', 
         weaponDnt: 'weapontable.dnt', 
@@ -86,6 +94,14 @@ module.exports = [
         type: 'cash',
         minLevel: 0, 
         minRank: 4 },
+      { 
+        mainDnt: 'itemtable_common2017.dnt', 
+        partsDnt: 'partstable_common2017.dnt', 
+        weaponDnt: 'weapontable_common2017.dnt', 
+        setDnt: 'setitemtable_cash.dnt',
+        type: 'cash',
+        minLevel: 0, 
+        minRank: 0 },
       { 
         mainDnt: 'itemtable_common2016.dnt', 
         partsDnt: 'partstable_common2016.dnt', 

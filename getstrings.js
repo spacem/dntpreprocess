@@ -21,7 +21,8 @@ var validColNames = [
 'TabNameID',
 'TitleNameID',
 'SubTitleNameID',
-'MapNameID'
+'MapNameID',
+'ItemGainText'
 ];
 
 

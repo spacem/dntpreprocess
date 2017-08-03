@@ -172,7 +172,7 @@ function readCurrentVerison(dnFolder) {
 }
 
 function getPreviousItemFileName(oldVersionFolder, currentVersion) {
-  if(!fs.existsSync(versionDir)) {
+  if(!fs.existsSync(oldVersionFolder)) {
     return;
   }
 
