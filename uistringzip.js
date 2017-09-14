@@ -27,7 +27,7 @@ function DnTranslations() {
       var text = elements[m].textContent;
       if(this.sizeLimit == null || text.length < this.sizeLimit) {
         var mid = elements[m].getAttribute("mid");
-        this.data[mid] = text.replace(/\\n/g, ' ').replace(/\n/g, ' ').replace(/#r/g, '').replace(/#Y/g, '').replace(/#y/g, '').replace(/#w/g, '').replace(/#j/g, '').replace(/#s/g, '').replace(/#j/g, '').replace(/#v/g, '');
+        this.data[mid] = text.replace(/\\n/g, ' ').replace(/\n/g, ' ').replace(/#r/g, '').replace(/#Y/g, '').replace(/#y/g, '').replace(/#w/g, '').replace(/#j/g, '').replace(/#s/g, '').replace(/#j/g, '').replace(/#v/g, '').replace(/#g/g, '');
         numItems++;
       }
     }

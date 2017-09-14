@@ -22,7 +22,8 @@ var validColNames = [
 'TitleNameID',
 'SubTitleNameID',
 'MapNameID',
-'ItemGainText'
+'ItemGainText',
+'TierName'
 ];
 
 

@@ -15,7 +15,8 @@ module.exports = {
       EnchantID: true,
       SkillID: true,
 	    DisjointDrop1: true, Disjointamount: true,
-      dragonjeweltype: true, ExchangeType:true, IconImageIndex: true
+      dragonjeweltype: true, ExchangeType:true, IconImageIndex: true,
+      TierName: true,
     },
     partsDnt: {
       SetItemID: true
