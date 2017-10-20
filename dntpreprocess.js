@@ -293,10 +293,73 @@ function isPotentialFile(fileName) {
   return false;
 }
 
+function removeRedundantColumns(data) {
+  console.log('removing redundant columns');
+  if(data.numRows == 0) return;
+
+  var colsToRemove = {};
+  var numColsToRemove = 0;
+  for(var c=0;c<data.numColumns;++c) {
+
+    if(data.columnNames[c] != 'State1') {
+      var shouldRemove = true;
+      for(var i=0;i<data.numRows;++i) {
+        if(data.data[i][c] != 0 && data.data[i][c] != '0') {
+          shouldRemove = false;
+          break;
+        }
+      }
+
+      if(shouldRemove) {
+        colsToRemove[c] = true;
+        numColsToRemove++;
+      }
+    }
+  }
+
+  if(numColsToRemove) {
+    var newData = [];
+    for(var i=0;i<data.numRows;++i) {
+      var row = [];
+      for(var c=0;c<data.numColumns;++c) {
+        if(c in colsToRemove) {
+        }
+        else {
+          row.push(data.data[i][c]);
+        }
+      }
+      newData.push(row);
+    }
+
+    var newColumnNames = [];
+    var newColumnIndexes = {};
+    var colIndex = 0;
+    for(var c=0;c<data.numColumns;++c) {
+      if(c in colsToRemove) {
+      }
+      else {
+        newColumnIndexes[data.columnNames[c]] = newColumnNames.length;
+        newColumnNames.push(data.columnNames[c]);
+      }
+    }
+
+    data.columnIndexes = newColumnIndexes;
+    data.columnNames = newColumnNames;
+    data.numColumns -= numColsToRemove;
+    data.data = newData;
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
-  
+
   var newData = [];
+  var redundantColumnsRemoved = false;
   if(isPartsFile(fileName)) {
+    redundantColumnsRemoved = removeRedundantColumns(data);
     
     for(var i=0;i<data.numRows;++i) {
       
@@ -307,6 +370,7 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
     }
   }
   else if(canRemoveStats(fileName)) {
+    redundantColumnsRemoved = removeRedundantColumns(data);
     
     for(var i=0;i<data.numRows;++i) {
       var newRow = [];
@@ -365,7 +429,7 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
     return true;
   }
   else {
-    return false;
+    return redundantColumnsRemoved;
   }
 }
 
@@ -523,6 +587,7 @@ function isAnnoyingItem(nameParam) {
 }
 
 function filterItemData(fileName, data) {
+  var redundantColumnsRemoved = removeRedundantColumns(data);
   
   var newData = [];
   var minLevel = getMinLevel(fileName);
@@ -580,7 +645,7 @@ function filterItemData(fileName, data) {
     return true;
   }
   else {
-    return false;
+    return redundantColumnsRemoved;
   }
 }
 
