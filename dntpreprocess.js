@@ -84,6 +84,7 @@ try {
           }
           
           if((filtered || dntReader.colsToLoad) && !fileExists(optimisedFileName)) {
+            optimiseStateValues(dntReader);
             writeFileFromReader(dntReader, optimisedFileName, jsonFileName);
           }
           dntReader = null;
@@ -125,6 +126,7 @@ try {
             return;
           }
           
+          optimiseStateValues(dntReader);
           writeFileFromReader(dntReader, optimisedFileName, jsonFileName);
           dntReader = null;
         }
@@ -294,7 +296,7 @@ function isPotentialFile(fileName) {
 }
 
 function removeRedundantColumns(data) {
-  console.log('removing redundant columns');
+  // console.log('removing redundant columns');
   if(data.numRows == 0) return;
 
   var colsToRemove = {};
@@ -373,28 +375,6 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
     redundantColumnsRemoved = removeRedundantColumns(data);
     
     for(var i=0;i<data.numRows;++i) {
-      var newRow = [];
-      
-      for(var c=0;c<data.numColumns;++c) {
-        if(data.columnNames[c] == 'State1') {
-          break;
-        }
-        else {
-          newRow[c] = data.data[i][c];
-        }
-      }
-      
-      for(var s=1;s<=10;++s) {
-        var dState = data.getValue(i, 'State' + s);
-        if(dState == -1) {
-          break;
-        }
-        else {
-          newRow.push(dState);
-          var value = data.getValue(i, 'State' + s + 'Value');
-          newRow.push(Math.round(value*10000)/10000);
-        }
-      }
       
       if(isEnchantFile(fileName)) {
         var id = data.getValue(i, 'EnchantID');
@@ -403,6 +383,7 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
         }
       }
       else if(isPotentialFile(fileName)) {
+
         var id = data.getValue(i, 'PotentialID');
         if(id in potentialsToUse) {
           var pData = data.getRow(i);
@@ -416,6 +397,28 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
           }
 
           if(!found) {
+            var newRow = [];
+            for(var c=0;c<data.numColumns;++c) {
+              if(data.columnNames[c] == 'State1') {
+                break;
+              }
+              else {
+                newRow[c] = data.data[i][c];
+              }
+            }
+            
+            for(var s=1;s<=10;++s) {
+              var dState = data.getValue(i, 'State' + s);
+              if(dState == -1) {
+                break;
+              }
+              else {
+                newRow.push(dState);
+                var value = data.getValue(i, 'State' + s + 'Value');
+                newRow.push(value);
+              }
+            }
+
             newData.push(newRow);
           }
         }
@@ -430,6 +433,34 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
   }
   else {
     return redundantColumnsRemoved;
+  }
+}
+
+function optimiseStateValues(data) {
+  
+  for(var row=0;row<data.numRows;++row) {
+    for(var s=1;s<=10;++s) {
+      var dState = data.getValue(row, 'State' + s);
+      if(dState == -1 || dState == null) {
+        break;
+      }
+      else {
+        optimiseStateValue(data, row, dState, 'State' + s + 'Value');
+        optimiseStateValue(data, row, dState, 'State' + s + '_Max');
+      }
+    }
+  }
+}
+
+function optimiseStateValue(data, row, dState, colName) {
+  var value = data.getValue(row, colName);
+  if(value) {
+    if(dState < 16 || dState == 25 || dState == 26 || dState == 29) {
+      data.data[row][data.columnIndexes[colName]] = Math.floor(value);
+    }
+    else {
+      data.data[row][data.columnIndexes[colName]] = Math.round(value*10000) / 10000;
+    }
   }
 }
 

@@ -18,6 +18,8 @@ quickbms -f "\*.dnt" script.txt %DNFOLDER%\Resource13.pak C:\games\Unpacker\%REG
 quickbms -f "\*.dnt" script.txt %DNFOLDER%\Resource14.pak C:\games\Unpacker\%REGION%
 quickbms -f "\*.dnt" script.txt %DNFOLDER%\Resource15.pak C:\games\Unpacker\%REGION%
 quickbms -f "\*.dnt" script.txt %DNFOLDER%\Resource16.pak C:\games\Unpacker\%REGION%
+quickbms -f "\*.dnt" script.txt %DNFOLDER%\Resource17.pak C:\games\Unpacker\%REGION%
+quickbms -f "\*.dnt" script.txt %DNFOLDER%\Resource18.pak C:\games\Unpacker\%REGION%
                                                                                           
 																						  
 																						  
@@ -39,4 +41,5 @@ quickbms -f "\*uistring.xml" script.txt %DNFOLDER%\Resource13.pak C:\games\Unpac
 quickbms -f "\*uistring.xml" script.txt %DNFOLDER%\Resource14.pak C:\games\Unpacker\%REGION%
 quickbms -f "\*uistring.xml" script.txt %DNFOLDER%\Resource15.pak C:\games\Unpacker\%REGION%
 quickbms -f "\*uistring.xml" script.txt %DNFOLDER%\Resource16.pak C:\games\Unpacker\%REGION%
-                                                                                          
+quickbms -f "\*uistring.xml" script.txt %DNFOLDER%\Resource17.pak C:\games\Unpacker\%REGION%
+quickbms -f "\*uistring.xml" script.txt %DNFOLDER%\Resource18.pak C:\games\Unpacker\%REGION%

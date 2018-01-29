@@ -36,6 +36,8 @@ node getstrings.js ../firebase_%REGION%/public/uistring.lzjson ../firebase_%REGI
 echo copy version
 copy %DNFOLDER%\Version.cfg C:\games\Unpacker\firebase_%REGION%\public\
 
+dir /b C:\games\Unpacker\firebase_%REGION%\public\*.lzjson > C:\games\Unpacker\firebase_%REGION%\public\files.txt
+
 echo get maze data
 call maze\get_maze_data %REGION%
 
@@ -45,9 +47,6 @@ rem pause
 
 echo deploy to firebase
 cd C:\games\Unpacker\firebase_%REGION%
-call firebase login
-echo deploying
-call firebase deploy
-
+call netlify deploy
 
 pause
