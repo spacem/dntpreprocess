@@ -1,1 +1,1 @@
-call unpack C:\games\Unpacker\dntpreprocess\maze\images c:\games\kdn
+call unpack C:\games\Unpacker\dntpreprocess\maze\images z:\other\games\kdn
