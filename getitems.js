@@ -16,6 +16,15 @@ var currentVersion = readCurrentVerison(dnFolder);
 console.log('current Version:' + currentVersion);
 
 var previousItemFileName = getPreviousItemFileName(oldVersionFolder, currentVersion);
+if(fs.existsSync(previousItemFileName + '.lzjson')) {
+  previousItemFileName = previousItemFileName + '.lzjson';
+}
+else if(fs.existsSync(previousItemFileName + '.json')) {
+  previousItemFileName = previousItemFileName + '.json';
+} 
+else {
+  previousItemFileName = null;
+}
 console.log('previous version fileName:' + previousItemFileName);
 
 if(previousItemFileName) {
@@ -54,7 +63,7 @@ else {
   
   walkSync(sourceDir, function(filePath, stat) {
       
-    var fileName = path.basename(filePath, '.lzjson');
+    var fileName = path.basename(filePath, '.json');
     
     var reader = null;
     if(fileName.indexOf('optimised') < 0 && fileName.indexOf('table') > 0) {
@@ -101,7 +110,7 @@ else {
   });
   
   itemDntReader.numRows = itemDntReader.data.length;
-  outputFile(itemDntReader, outputFolder + '/' + 'all-items.lzjson');
+  outputFile(itemDntReader, outputFolder + '/' + 'all-items.lzjson', outputFolder + '/' + 'all-items.json');
 
   if (!fs.existsSync(oldVersionFolder)) {
       fs.mkdirSync(oldVersionFolder);
@@ -112,18 +121,19 @@ else {
       fs.mkdirSync(versionDir);
   }
 
-  outputFile(itemDntReader, path.join(versionDir, 'all-items.lzjson'));
+  outputFile(itemDntReader, path.join(versionDir, 'all-items.lzjson'), path.join(versionDir, 'all-items.json'));
 }
 
-function outputFile(data, fileName) {
+function outputFile(data, fileName, jsonFileName) {
   try
   {
     var dataString = JSON.stringify(data);
-    var cdata = LZString.compressToUTF16(dataString);
+    fs.writeFileSync(jsonFileName, dataString);
+    // var cdata = LZString.compressToUTF16(dataString);
     
-    dataString = null;
-    fs.writeFileSync(fileName, cdata);
-    console.log('written ' + fileName);
+    // dataString = null;
+    // fs.writeFileSync(fileName, cdata);
+    console.log('written ' + jsonFileName);
   }
   catch(ex) {
     console.log('--- ERROR --- ');
@@ -139,7 +149,11 @@ function readFile(filePath) {
   var dntReader = new DntReader();
   if(data.length > 0) {
   
-    dntReader.processLzFile(data.toString(), filePath, dntReader);
+    if(filePath.indexOf('.lzjson') >= 0) {
+      dntReader.processLzFile(data.toString(), filePath, dntReader);
+    } else {
+      dntReader.processJsonFile(data.toString(), filePath, dntReader);
+    }
 
 //    var buf = toArrayBuffer(data);
     //dntReader.processFile(buf, filePath);
@@ -183,5 +197,5 @@ function getPreviousItemFileName(oldVersionFolder, currentVersion) {
           previousVersion = Number(folder);
       }
   });
-  return path.join(oldVersionFolder, previousVersion.toString(), 'all-items.lzjson');
+  return path.join(oldVersionFolder, previousVersion.toString(), 'all-items');
 }

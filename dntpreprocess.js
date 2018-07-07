@@ -24,10 +24,24 @@ try {
         
       var fileName = path.basename(filePath, '.dnt');
       var outputFileName = outputFolder + '/' + fileName + '.lzjson'
+      var jsonFileName = outputFolder + '/' + fileName + '.json'
       
       if(filePath.indexOf('.dnt') == filePath.length - 4 &&
         !fileExists(outputFileName)
         ) {
+
+          if(
+            filePath.indexOf('itemtable_gacha.dnt') >= 0 ||
+            filePath.indexOf('enchanttable.dnt') >= 0 ||
+            filePath.indexOf('enchantmaintable.dnt') >= 0 ||
+            filePath.indexOf('skillleveltable_prefixarm.dnt') >= 0 ||
+            filePath.indexOf('skillleveltable_prefixwep.dnt') >= 0 ||
+            filePath.indexOf('potentialtable.dnt') >= 0 ||
+            filePath.indexOf('monsterweighttable.dnt') >= 0 ||
+            filePath.indexOf('cashcommodity.dnt') >= 0 ||
+            filePath.indexOf('monstertable_champion.dnt') >= 0) {
+              return;
+          }
         
         var data = readFile(filePath);
         if(data.length == 0) {
@@ -39,7 +53,8 @@ try {
           dntReader.processFile(buf, filePath);
           buf = null;
           
-          writeFileFromReader(dntReader, outputFileName);
+          // writeFileFromReader(dntReader, outputFileName);
+          writeFileFromReader(dntReader, outputFileName, jsonFileName);
           dntReader = null;
         }
       }

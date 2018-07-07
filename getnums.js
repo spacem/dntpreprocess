@@ -32,7 +32,7 @@ else {
   
   walkSync(sourceDir, function(filePath, stat) {
       
-    var fileName = path.basename(filePath, '.lzjson');
+    var fileName = path.basename(filePath, '.json');
 	
 	var result = {};
     
@@ -93,7 +93,7 @@ function readFile(filePath) {
   var dntReader = new DntReader();
   if(data.length > 0) {
   
-    dntReader.processLzFile(data.toString(), filePath, dntReader);
+    dntReader.processJsonFile(data.toString(), filePath, dntReader);
 
 //    var buf = toArrayBuffer(data);
     //dntReader.processFile(buf, filePath);

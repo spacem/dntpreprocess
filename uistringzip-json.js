@@ -1,6 +1,5 @@
 var fs = require('fs');
 var DOMParser = require('xmldom').DOMParser;
-var LZString = require('lz-string');
 
 function DnTranslations() {
   // module used to load uistring.xml files

@@ -1,6 +1,6 @@
 var path = require('path')
 var fs = require('fs');
-var LZString = require('lz-string');
+// var LZString = require('lz-string');
 
 eval(fs.readFileSync('../dntviewer/simplerreader.js', 'utf8'));
 eval(fs.readFileSync('../dntviewer/dntreader.js', 'utf8'));
@@ -33,8 +33,8 @@ if(!sourceDir) {
 else {
   
   
-  var stringData = fs.readFileSync(uiStringFile);
-  var stringifiedData = LZString.decompressFromUTF16(stringData.toString());
+  var stringifiedData = fs.readFileSync(uiStringFile);
+  // var stringifiedData = LZString.decompressFromUTF16(stringData.toString());
   var uistrings = JSON.parse(stringifiedData);
   var newUiStrings = {};
   
@@ -45,10 +45,10 @@ else {
   walkSync(sourceDir, function(filePath, stat) {
 
     try {
-      var fileName = path.basename(filePath, '.lzjson');
+      var fileName = path.basename(filePath, '.json');
       
       var reader = null;
-      if(fileName.indexOf('optimised') < 0 && fileName.indexOf('uistring') < 0 && fileName.indexOf('all-') < 0 && fileName.indexOf('/maze/') < 0) {
+      if(fileName.indexOf('optimised') < 0 && fileName.indexOf('uistring') < 0 && fileName.indexOf('all-') < 0 && filePath.indexOf('/maze/') < 0) {
         reader = readFile(filePath);
         
         var colNames = getRelaventColumnNames(reader);
@@ -111,10 +111,10 @@ function outputFile(data, fileName, jsonFileName) {
   {
     var dataString = JSON.stringify(data);
     fs.writeFileSync(jsonFileName, dataString);
-    var cdata = LZString.compressToUTF16(dataString);
+    // var cdata = LZString.compressToUTF16(dataString);
     
     dataString = null;
-    fs.writeFileSync(fileName, cdata);
+    // fs.writeFileSync(fileName, cdata);
     console.log('written ' + fileName);
   }
   catch(ex) {
@@ -131,7 +131,7 @@ function readFile(filePath) {
   var dntReader = new DntReader();
   if(data.length > 0) {
   
-    dntReader.processLzFile(data.toString(), filePath, dntReader);
+    dntReader.processJsonFile(data.toString(), filePath);
 
 //    var buf = toArrayBuffer(data);
     //dntReader.processFile(buf, filePath);

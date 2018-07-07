@@ -60,7 +60,7 @@ var weapons = []
 var accumulate = function(entries, cols, file) {
     var name = file.getName()
 	
-	console.log('processing: ', name);
+	// console.log('processing: ', name);
 	
     if (name.startsWith("skilltable")) {
         skills = skills.concat(entries)
