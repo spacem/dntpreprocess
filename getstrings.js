@@ -15,14 +15,14 @@ var validColNames = [
 'NameIDParam',
 'SkillExplanationID',
 'SkillExplanationIDParam',
-'DescriptionID',
-'DescriptionIDParam',
+// 'DescriptionID',
+// 'DescriptionIDParam',
 'JobName',
 'TabNameID',
 'TitleNameID',
 'SubTitleNameID',
 'MapNameID',
-'ItemGainText',
+// 'ItemGainText',
 'TierName'
 ];
 
@@ -48,7 +48,7 @@ else {
       var fileName = path.basename(filePath, '.json');
       
       var reader = null;
-      if(fileName.indexOf('optimised') < 0 && fileName.indexOf('uistring') < 0 && fileName.indexOf('all-') < 0 && filePath.indexOf('/maze/') < 0) {
+      if(isAFileWeCareAbout(fileName)) {
         reader = readFile(filePath);
         
         var colNames = getRelaventColumnNames(reader);
@@ -59,7 +59,7 @@ else {
             
             for(var j=0;j<colNames.length;++j) {
               var val = reader.getValue(i, colNames[j]);
-              processValue(val.toString());
+              processValue(val.toString(), colNames[j]);
             }
           }
         }
@@ -73,12 +73,43 @@ else {
   outputFile(newUiStrings, outputFolder + '/' + 'uistring.optimised.lzjson', outputFolder + '/' + 'uistring.optimised.json');
 }
 
-function processValue(val) {
-  if(val && val.length > 0) {
-    if(val in uistrings) {
-      newUiStrings[val] = uistrings[val];
+function isAFileWeCareAbout(fileName) {
+
+  const requiredSubStrings = [
+    'itemtable',
+    'appellationtable',
+    'jobtable',
+    // 'skillleveltable_',
+    'skilltable_',
+    'exchange',
+    'vehicletable',
+    'shoptable'
+  ];
+
+  const badSubStrings = [
+    'optimised',
+    'uistring',
+    'all-',
+    'maze'
+  ];
+
+  for (const s of badSubStrings) {
+    if (fileName.indexOf(s) >= 0) {
+      return false;
     }
-    else {
+  }
+
+  for (const s of requiredSubStrings) {
+    if (fileName.indexOf(s) >= 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function processValue(val, colName) {
+  if(val && val.length > 0) {
+    if(colName.indexOf('Param') >= 0) {
       var splitVals = val.split(',');
       for(var k=0;k<splitVals.length;++k) {
         if(splitVals[k].indexOf('{') == 0) {
@@ -88,6 +119,10 @@ function processValue(val) {
             newUiStrings[splitVal] = uistrings[splitVal];
           }
         }
+      }
+    } else {
+      if(val in uistrings) {
+        newUiStrings[val] = uistrings[val];
       }
     }
   }

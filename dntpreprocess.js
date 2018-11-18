@@ -191,11 +191,11 @@ function getColsToLoad(fileName) {
       if(t.enchantDnt) {
         colsToLoadLookup[t.enchantDnt] = colsToLoad.enchantDnt;
       }
+      if(t.enchantDnt2) {
+        colsToLoadLookup[t.enchantDnt2] = colsToLoad.enchantDnt;
+      }
       if(t.potentialDnt) {
         colsToLoadLookup[t.potentialDnt] = colsToLoad.potentialDnt;
-      }
-      if(t.sparkDnt) {
-        colsToLoadLookup[t.sparkDnt] = colsToLoad.sparkDnt;
       }
       if(t.setDnt) {
         colsToLoadLookup[t.setDnt] = colsToLoad.setDnt;
@@ -222,6 +222,9 @@ function canRemoveStats(fileName) {
       return true;
     }
     else if(t.enchantDnt == fileName) {
+      return true;
+    }
+    else if(t.enchantDnt2 == fileName) {
       return true;
     }
   }
@@ -289,6 +292,9 @@ function isEnchantFile(fileName) {
     var t = itemTypes[i];
     
     if(t.enchantDnt == fileName) {
+      return true;
+    }
+    else if(t.enchantDnt2 == fileName) {
       return true;
     }
   }
@@ -531,14 +537,7 @@ function potentialsMatch(p1, p2) {
 
 function isValidLevel(levelLimit, minLevel, fileName, nameParam) {
   if(levelLimit < minLevel) {
-
-    // allow radient accessories only
-    if(fileName == 'itemtable_equipment.dnt' && nameParam.indexOf('{1000001970}') > -1) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return false;
   }
   return true;
 }

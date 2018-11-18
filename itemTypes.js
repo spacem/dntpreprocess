@@ -11,16 +11,15 @@ module.exports = [
       { 
         mainDnt: 'itemtable_skilllevelup.dnt', 
         potentialDnt: 'potentialtable.dnt',
-        sparkDnt: 'potentialtable_potentialjewel.dnt',
         type: 'techs', 
-        minLevel: 60,
+        minLevel: 80,
         minRank: 0 },
       
       { 
         mainDnt: 'itemtable_talisman.dnt', 
         type: 'talisman', 
         potentialDnt: 'potentialtable_talismanitem.dnt',
-        minLevel: 24, 
+        minLevel: 80, 
         minRank: 0 },
       
       { 
@@ -29,21 +28,21 @@ module.exports = [
         enchantDnt: 'enchanttable_dragonjewel.dnt', 
         gemDnt: 'dragonjeweltable.dnt',
         type: 'gems',
-        minLevel: 70, 
+        minLevel: 80, 
         minRank: 3 },
       
       { 
         mainDnt : 'itemtable_glyph.dnt', 
         potentialDnt: 'potentialtable_glyph.dnt',
         type: 'plates',
-        minLevel: 40, 
+        minLevel: 60, 
         minRank: 2 },
 
       {
         mainDnt : 'itemtable_glyph95.dnt', 
         potentialDnt: 'potentialtable_glyph95.dnt',
         type: 'plates',
-        minLevel: 1,
+        minLevel: 60,
         minRank: 1,
       },
 
@@ -64,20 +63,20 @@ module.exports = [
         weaponDnt: 'weapontable_equipment.dnt', 
         enchantDnt: 'enchanttable.dnt', 
         potentialDnt: 'potentialtable.dnt',
-        sparkDnt: 'potentialtable_potentialjewel.dnt',
         setDnt: 'setitemtable.dnt',
         type: 'equipment',
-        minLevel: 40, 
+        minLevel: 80, 
         minRank: 3 },
       { 
         mainDnt: 'itemtable_reboot.dnt', 
         partsDnt: 'partstable_reboot.dnt', 
         weaponDnt: 'weapontable_reboot.dnt', 
         enchantDnt: 'enchanttable_reboot.dnt', 
+        enchantDnt2: 'enchanttable_95.dnt',
         potentialDnt: 'potentialtable_reboot.dnt',
         setDnt: 'setitemtable.dnt',
         type: 'equipment',
-        minLevel: 40, 
+        minLevel: 80, 
         minRank: 3 },
       { 
         mainDnt: 'itemtable_pvp.dnt',
@@ -86,7 +85,7 @@ module.exports = [
         enchantDnt: 'enchanttable.dnt', 
         setDnt: 'setitemtable.dnt',
         type: 'equipment',
-        minLevel: 40, 
+        minLevel: 80, 
         minRank: 3 },
       { 
         mainDnt: 'itemtable_cashclone.dnt', 

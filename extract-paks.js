@@ -44,7 +44,7 @@ function readString(position, len) {
     return buffer.toString('utf8', 0, zeroIndex);
 }
 
-const sourceDir = 'C:\\games\\DragonNestNA';
+const sourceDir = 'd:\\games\\DragonNestNA';
 const destDir = 'C:\\tmp';
 walkSync(sourceDir, function(filePath, stat) {
     if(filePath.indexOf('Resource') == -1 || filePath.indexOf('.pak') == -1) {

@@ -1,2 +1,2 @@
-C:\games\Unpacker\ImageMagick-6.9.3-7-portable-Q16-x64\mogrify -resize 80%% -format png C:\games\Unpacker\kdn\kdn731_assets\mainbar\*.dds
-move C:\games\Unpacker\kdn\kdn731_assets\mainbar\*.png C:\games\Unpacker\images
+d:\games\Unpacker\ImageMagick-6.9.3-7-portable-Q16-x64\mogrify -resize 80%% -format png d:\games\Unpacker\kdn\kdn731_assets\mainbar\*.dds
+move d:\games\Unpacker\kdn\kdn731_assets\mainbar\*.png d:\games\Unpacker\images

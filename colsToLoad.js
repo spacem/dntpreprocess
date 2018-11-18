@@ -59,12 +59,6 @@ module.exports = {
       NeedSetNum7: true, State7: true, State7Value: true, NeedSetNum8: true, State8: true, State8Value: true, NeedSetNum9: true, State9: true, State9Value: true, 
       NeedSetNum10: true, State10: true, State10Value: true, NeedSetNum11: true, State11: true, State11Value: true, NeedSetNum12: true, State12: true, State12Value:true
     },
-    sparkDnt: {
-      PotentialID: true, PotentialNo: true, PotentialRatio: true, State1: true, State1Value: true, State2: true, State2Value: true, State3: true, State3Value: true, 
-      State4: true, State4Value: true, State5: true, State5Value: true, State6: true, State6Value: true, State7: true, State7Value: true, State8: true, State8Value: true,
-      State9: true, State9Value: true, State10: true, State10Value: true, State11: true, State11Value: true, State12: true, State12Value: true, State13: true, State13Value: true, 
-      State14: true, State14Value: true, State15: true, State15Value: true, State16: true, State16Value: true
-    },
     "playerleveltable.dnt": {
       Strength:true,Agility:true,Intelligence:true,Stamina:true,AggroperPvE:true,BaseMP:true
     },
