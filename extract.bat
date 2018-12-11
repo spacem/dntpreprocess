@@ -49,6 +49,6 @@ rem pause
 
 echo deploy to firebase
 cd d:\games\Unpacker\firebase_%REGION%
-call netlify deploy
+call netlify deploy -p -d d:\games\Unpacker\firebase_%REGION%
 
 pause

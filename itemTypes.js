@@ -93,6 +93,22 @@ module.exports = [
         type: 'cash',
         minLevel: 0, 
         minRank: 4 },
+        { 
+          mainDnt: 'itemtable_common2019.dnt', 
+          partsDnt: 'partstable_common2019.dnt', 
+          weaponDnt: 'weapontable_common2019.dnt', 
+          setDnt: 'setitemtable_cash.dnt',
+          type: 'cash',
+          minLevel: 0, 
+          minRank: 0 },
+          { 
+            mainDnt: 'itemtable_common2018.dnt', 
+            partsDnt: 'partstable_common2018.dnt', 
+            weaponDnt: 'weapontable_common2018.dnt', 
+            setDnt: 'setitemtable_cash.dnt',
+            type: 'cash',
+            minLevel: 0, 
+            minRank: 0 },
       { 
         mainDnt: 'itemtable_common2017.dnt', 
         partsDnt: 'partstable_common2017.dnt', 
