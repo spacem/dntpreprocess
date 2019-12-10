@@ -15,16 +15,21 @@ var validColNames = [
 'NameIDParam',
 'SkillExplanationID',
 'SkillExplanationIDParam',
-// 'DescriptionID',
-// 'DescriptionIDParam',
 'JobName',
 'TabNameID',
-'TitleNameID',
-'SubTitleNameID',
-'MapNameID',
-// 'ItemGainText',
 'TierName'
 ];
+
+var itemColNames = [
+  'NameID',
+  'NameIDParam',
+  'SkillExplanationID',
+  'SkillExplanationIDParam',
+  'JobName',
+  'TierName',
+  'DescriptionID',
+  'DescriptionIDParam',
+  ];
 
 
 if(!sourceDir) {
@@ -51,7 +56,7 @@ else {
       if(isAFileWeCareAbout(fileName)) {
         reader = readFile(filePath);
         
-        var colNames = getRelaventColumnNames(reader);
+        var colNames = getRelaventColumnNames(reader, fileName);
         if(colNames.length) {
           // console.log('extracting ', colNames.length, ' columns from ', fileName, colNames);
 
@@ -128,12 +133,22 @@ function processValue(val, colName) {
   }
 }
 
-function getRelaventColumnNames(reader) {
+function getRelaventColumnNames(reader, fileName) {
   var retVal = [];
-  for(var i=0;i<validColNames.length;++i) {
-    for(var j=0;j<reader.columnNames.length;++j) {
-      if(validColNames[i] == reader.columnNames[j]) {
-        retVal.push(validColNames[i]);
+  if(fileName.indexOf('itemtable') == -1) {
+    for(var i=0;i<validColNames.length;++i) {
+      for(var j=0;j<reader.columnNames.length;++j) {
+        if(validColNames[i] == reader.columnNames[j]) {
+          retVal.push(validColNames[i]);
+        } 
+      }
+    }
+  } else {
+    for(var i=0;i<itemColNames.length;++i) {
+      for(var j=0;j<reader.columnNames.length;++j) {
+        if(itemColNames[i] == reader.columnNames[j]) {
+          retVal.push(itemColNames[i]);
+        }
       }
     }
   }

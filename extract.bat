@@ -51,4 +51,8 @@ echo deploy to firebase
 cd d:\games\Unpacker\firebase_%REGION%
 call netlify deploy -p -d d:\games\Unpacker\firebase_%REGION%
 
+echo if it fails run: 
+echo cd d:\games\Unpacker\firebase_%REGION%
+echo call netlify deploy -p -d d:\games\Unpacker\firebase_%REGION%
+
 pause

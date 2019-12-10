@@ -428,10 +428,10 @@ function filterData(fileName, data, potentialsToUse, enchantmentsToUse) {
               }
             }
             
-            for(var s=1;s<=10;++s) {
+            for(var s=1;s<=20;++s) {
               var dState = data.getValue(i, 'State' + s);
               if(dState == -1) {
-                break;
+                continue;
               }
               else {
                 newRow.push(dState);
@@ -592,6 +592,37 @@ function skipTechs(data, currentIndex, dLevelLimit, dTypeParam1) {
   return false;
 }
 
+function isWeirdStats(dType, id) {
+  if(dType == 1) {
+    switch (id) {
+      // bdn accessories
+      case 268484197:
+      case 268484213:
+      case 268484201:
+      case 268484205:
+      case 268484209:
+      case 268484215:
+      case 268484210:
+      case 268484206:
+      case 268484202:
+      case 268484198:
+      case 268484214:
+      case 268484200:
+      case 268484204:
+      case 268484208:
+      case 268484212:
+      case 268484216:
+      case 268484199:
+      case 268484203:
+      case 268484207:
+      case 268484211:
+        return true;
+    }
+  }
+
+  return false;
+}
+
 function isBadPlate(dType, sellAmount, id) {
   if(dType == 38) {
     if(sellAmount === 0) {
@@ -664,6 +695,9 @@ function filterItemData(fileName, data) {
     var sellAmount = data.getValue(i, 'SellAmount');
     var id = data.getValue(i, 'id');
     if(isBadPlate(dType, sellAmount, id)) {
+      continue;
+    }
+    if(isWeirdStats(dType, id)) {
       continue;
     }
     

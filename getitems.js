@@ -76,7 +76,6 @@ else {
 	  'IconImageIndex' in reader.columnIndexes) {
 
 		  for(var i=0;i<reader.numRows;++i) {
-
         var id = reader.getValue(i, 'id');
 
         var version = null;
@@ -96,7 +95,7 @@ else {
           reader.getValue(i, 'Rank'),
           reader.getValue(i, 'IconImageIndex'),
           reader.getValue(i, 'Type'),
-          reader.getValue(i, 'LevelLimit'),
+          level,
           fileName,
           version
         ]);
