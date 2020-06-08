@@ -17,7 +17,8 @@ var validColNames = [
 'SkillExplanationIDParam',
 'JobName',
 'TabNameID',
-'TierName'
+'TierName',
+'ItemGainText'
 ];
 
 var itemColNames = [

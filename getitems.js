@@ -95,7 +95,7 @@ else {
           reader.getValue(i, 'Rank'),
           reader.getValue(i, 'IconImageIndex'),
           reader.getValue(i, 'Type'),
-          level,
+          reader.getValue(i, 'LevelLimit'),
           fileName,
           version
         ]);

@@ -706,7 +706,7 @@ function filterItemData(fileName, data) {
     var dTypeParam1 = data.getValue(i, 'TypeParam1');
 
     // skip items with no data
-    if(dState1max > 0 || dStateValue1 > 0 || dTypeParam1 > 0 || dType == 1 || dType == 35) {
+    if(dState1max > 0 || dStateValue1 > 0 || dTypeParam1 > 0 || dType == 1 || dType == 35 || dType == 11) {
 
       if(fileName == 'itemtable_skilllevelup.dnt') {
         if(skipTechs(data, i, dLevelLimit, dTypeParam1)) {
