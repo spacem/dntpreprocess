@@ -22,14 +22,14 @@ module.exports = [
         minLevel: 80, 
         minRank: 0 },
       
-      { 
-        mainDnt: 'itemtable_dragonjewel.dnt', 
+      {
+        mainDnt: 'itemtable_dragonjewel.dnt',
         potentialDnt: 'potentialtable_dragonjewel.dnt',
-        enchantDnt: 'enchanttable_dragonjewel.dnt', 
+        enchantDnt: 'enchanttable_dragonjewel.dnt',
         gemDnt: 'dragonjeweltable.dnt',
         type: 'gems',
-        minLevel: 80, 
-        minRank: 3 },
+        minLevel: 90,
+        minRank: 0 },
       
       { 
         mainDnt : 'itemtable_glyph.dnt', 
