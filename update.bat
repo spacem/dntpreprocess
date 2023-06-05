@@ -11,10 +11,10 @@ SET UPDATE_OUTPUT_FOLDER=%3
 @echo %UPDATE_OUTPUT_FOLDER%
 pause
 del/q/s %UPDATE_WORKING_FOLDER%\*.*
-del/q/s %UPDATE_OUTPUT_FOLDER%\*.*
+del/q/s %UPDATE_OUTPUT_FOLDER%\public\*.*
 call bms_unpack %UPDATE_DN_FOLDER% %UPDATE_WORKING_FOLDER%
-call convert_images %UPDATE_WORKING_FOLDER% %UPDATE_OUTPUT_FOLDER%
-call npm run process %UPDATE_WORKING_FOLDER% %UPDATE_OUTPUT_FOLDER%
+call convert_images %UPDATE_WORKING_FOLDER% %UPDATE_OUTPUT_FOLDER%\public
+call npm run process %UPDATE_WORKING_FOLDER% %UPDATE_OUTPUT_FOLDER%\public
 call npm run upload %UPDATE_OUTPUT_FOLDER%
 
 goto :eof
