@@ -1,0 +1,24 @@
+{
+  "name": "dntpreprocess",
+  "version": "1.0.0",
+  "description": "These are scripts that I run to deploy files for dngearsim and dntviewer.",
+  "scripts": {
+    "extract": "bms_unpack",
+    "clean_output": "echo TODO",
+    "process_images": "convert_images.bat",
+    "process": "node ./src/process",
+    "upload": "netlify deploy -p -d"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spacem/dntpreprocess.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/spacem/dntpreprocess/issues"
+  },
+  "homepage": "https://github.com/spacem/dntpreprocess#readme",
+  "dependencies": {
+    "@xmldom/xmldom": "^0.8.8"
+  }
+}
