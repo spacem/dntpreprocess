@@ -1,24 +1,31 @@
-These are scripts that I run to deploy files for dngearsim, dnskillsim and dntviewer.
-Probably needs some tweaking if others want to use to deploy their own regions but you might be able to bumble through from this rough guide.
+These are scripts that I run to deploy files for dngearsim and dntviewer.
 
-Before you start you need
-* Node.js
-* netlify cli
-* Java in C:\Program Files (x86)\Java\jre1.8.0_91\bin\java
-* The folder d:\games\Unpacker
-* A netlify account
+# Requirements:
+* Node.js 16
+* Netlify CLI (to deploy to netlify)
 
-In theory you just need to copy all files in this repository (git clone or download the zip) to d:\games\Unpacker\dntpreprocess Then run extract.bat and pass two parameters. The region and the folder where the game is installed.
+# First
+> `npm ci`
 
-For a full deployment you need a netlify account. Make a folder called firebase_region and copy the contents of the firebase_xxx folder into that folder.
+## Extract dnt files
+Pass in the dn folder and working folder
+> `npm run extract D:\games\DragonNest d:\working`
 
+## Clean output folder
+To delete files in output folder
+> `npm run clean_output d:\working`
 
-For example I have a batch file called extract_eu.bat in d:\games\unpacker with this single line:
-call dntpreprocess\extract.bat eu Z:\games\DragonNestEurope
+## Process images
+Pass in the working folder and the output folder
+> `npm run process_images D:\games\working d:\output`
 
-I have a copy of the firebase_xxx folder that is called d:\games\unpacker\firebase_eu\
+## Process files
+Pass in the working folder and the output folder
+> `npm run process d:\working d:\output`
 
-extract.bat unpacks to d:\games\Unpacker\eu then optimised files are written to d:\games\unpacker\firebase_eu\public
-extract.bat then logs into netlify and uploads the optimised files
+## Upload files to netlify
+Pass in the output folder
+> `npm run upload d:\output`
 
-For completeness there is one last step which is to add the region to regionService.js in the gear and skill sims.
+## Do the lot
+> `update D:\games\DragonNest D:\working D:\output`
