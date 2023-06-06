@@ -4,7 +4,6 @@
   "description": "These are scripts that I run to deploy files for dngearsim and dntviewer.",
   "scripts": {
     "extract": "bms_unpack",
-    "clean_output": "echo TODO",
     "process_images": "convert_images.bat",
     "process": "node ./src/process",
     "upload": "netlify deploy -p -d"

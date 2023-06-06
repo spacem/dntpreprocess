@@ -1,2 +1,4 @@
 node_modules
 maze/images
+# Local Netlify folder
+.netlify
