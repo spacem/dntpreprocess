@@ -4,72 +4,35 @@ var colsToLoad = require('./config/colsToLoad.js');
 var itemTypes = require('./config/itemTypes.js');
 const DntReader = require('./utils/dntreader.js');
 
-module.exports = function dntProcess(sourceDir, outputFolder) {
+module.exports = function dntOptimise(outputFolder) {
   var colsToLoadLookup = null;
 
   try {
-    if(!sourceDir || !outputFolder) {
+    if(!outputFolder) {
       console.log("arg1: path to dnt files, arg2: output folder");
     }
-    else {
-      walkSync(sourceDir, function(filePath, stat) {
-          
-        var fileName = path.basename(filePath, '.dnt');
-        var jsonFileName = outputFolder + '/' + fileName + '.json'
-        
-        if(filePath.indexOf('.dnt') == filePath.length - 4) {
-          // Exlude these files since they are quite large
-          // if(
-          //   filePath.indexOf('itemtable_gacha.dnt') >= 0 ||
-          //   filePath.indexOf('enchanttable.dnt') >= 0 ||
-          //   filePath.indexOf('enchantmaintable.dnt') >= 0 ||
-          //   filePath.indexOf('skillleveltable_prefixarm.dnt') >= 0 ||
-          //   filePath.indexOf('skillleveltable_prefixwep.dnt') >= 0 ||
-          //   filePath.indexOf('potentialtable.dnt') >= 0 ||
-          //   filePath.indexOf('monsterweighttable.dnt') >= 0 ||
-          //   filePath.indexOf('cashcommodity.dnt') >= 0 ||
-          //   filePath.indexOf('monstertable_champion.dnt') >= 0) {
-          //     return;
-          // }
-          
-          var data = readFile(filePath);
-          if(data.length == 0) {
-          }
-          else {
-            var dntReader = new DntReader();
-            var buf = toArrayBuffer(data);
-            data = null;
-            dntReader.processFile(buf, filePath);
-            buf = null;
-            
-            writeFileFromReader(dntReader, jsonFileName);
-            dntReader = null;
-          }
-        }
-      });
-      
+    else {      
       var potentialsToUse = {};
       var enchantmentsToUse = {};
       
       // now output itemtables and build up list of items that were skipped
       console.log('outputting item files');
-      walkSync(sourceDir, function(filePath, stat) {
+      walkSync(outputFolder, function(filePath, stat) {
           
-        var fileName = path.basename(filePath, '.dnt');
-        if(!isItemFile(fileName + '.dnt')) {
+        var fileName = path.basename(filePath, '.json');
+        if(!isItemFile(fileName)) {
           return;
         }
         
         var jsonFileName = outputFolder + '/' + fileName + '.optimised.json'
-        
-        if(filePath.indexOf('.dnt') == filePath.length - 4) {
+        if(filePath.indexOf('.json') > 0 && filePath.indexOf('.optimised') > 0) {
           
           var data = readFile(filePath);
           if(data.length == 0) {
           }
           else {
             var dntReader = new DntReader();
-            dntReader.colsToLoad = getColsToLoad(fileName + '.dnt');
+            dntReader.colsToLoad = getColsToLoad(fileName);
             if(!dntReader.colsToLoad) {
               dntReader.colsToLoad = null;
             }
@@ -78,7 +41,7 @@ module.exports = function dntProcess(sourceDir, outputFolder) {
             dntReader.processFile(buf, filePath);
             buf = null;
             
-            var filtered = filterItemData(fileName + '.dnt', dntReader);
+            var filtered = filterItemData(fileName, dntReader);
             // console.log(' filtered ' + dntReader.numRows + ' rows');
             for(var i=0;i<dntReader.numRows;++i) {
               enchantmentsToUse[dntReader.getValue(i, 'EnchantID')] = true;
@@ -97,22 +60,20 @@ module.exports = function dntProcess(sourceDir, outputFolder) {
       // finally output other files
       console.log('outputting optimised files');
       walkSync(sourceDir, function(filePath, stat) {
-          
-        var fileName = path.basename(filePath, '.dnt');
-        if(isItemFile(fileName + '.dnt')) {
+        var fileName = path.basename(filePath, '.json');
+        if(isItemFile(fileName)) {
           return;
         }
         
         var jsonFileName = outputFolder + '/' + fileName + '.optimised.json'
-        
-        if(filePath.indexOf('.dnt') == filePath.length - 4) {
+        if(filePath.indexOf('.json') > 0 && filePath.indexOf('.optimised') > 0) {
           
           var data = readFile(filePath);
           if(data.length == 0) {
           }
           else {
             var dntReader = new DntReader();
-            dntReader.colsToLoad = getColsToLoad(fileName + '.dnt');
+            dntReader.colsToLoad = getColsToLoad(fileName);
             if(!dntReader.colsToLoad) {
               dntReader.colsToLoad = null;
             }
@@ -121,7 +82,7 @@ module.exports = function dntProcess(sourceDir, outputFolder) {
             dntReader.processFile(buf, filePath);
             buf = null;
             
-            if(!filterData(fileName + '.dnt', dntReader, potentialsToUse, enchantmentsToUse) && !dntReader.colsToLoad) {
+            if(!filterData(fileName, dntReader, potentialsToUse, enchantmentsToUse) && !dntReader.colsToLoad) {
               return;
             }
             
@@ -682,7 +643,7 @@ module.exports = function dntProcess(sourceDir, outputFolder) {
       // skip items with no data
       if(dState1max > 0 || dStateValue1 > 0 || dTypeParam1 > 0 || dType == 1 || dType == 35 || dType == 11) {
 
-        if(fileName == 'itemtable_skilllevelup.dnt') {
+        if(fileName == 'itemtable_skilllevelup') {
           if(skipTechs(data, i, dLevelLimit, dTypeParam1)) {
             continue;
           }
